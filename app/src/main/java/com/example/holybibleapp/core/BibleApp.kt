@@ -1,19 +1,6 @@
 package com.example.holybibleapp.core
 
 import android.app.Application
-import com.example.holybibleapp.data.BooksCloudDataSource
-import com.example.holybibleapp.data.BooksCloudMapper
-import com.example.holybibleapp.data.BooksRepository
-import com.example.holybibleapp.data.cache.BookCacheMapper
-import com.example.holybibleapp.data.cache.BooksCacheDataSource
-import com.example.holybibleapp.data.cache.BooksCacheMapper
-import com.example.holybibleapp.data.cache.RealmProvider
-import com.example.holybibleapp.data.net.BookCloudMapper
-import com.example.holybibleapp.data.net.BooksService
-import retrofit2.Retrofit
-import com.example.holybibleapp.data.BooksRepository
-import com.example.holybibleapp.domain.BaseBooksDataToDomainMapper
-import com.example.holybibleapp.domain.BooksInteractor
 
 class BibleApp : Application() {
 
