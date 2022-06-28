@@ -10,8 +10,4 @@ interface RealmProvider {
 
         override fun provide(): Realm = Realm.getDefaultInstance()
     }
-
-//    class Test : RealmProvider{
-//        // TODO:
-//    }
 }

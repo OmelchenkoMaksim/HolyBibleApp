@@ -1,16 +1,16 @@
 package com.example.holybibleapp.presentation
 
-import com.example.holybibleapp.core.Book
+import com.example.holybibleapp.domain.BookDomain
+import com.example.holybibleapp.domain.BookDomainToUiMapper
 import com.example.holybibleapp.domain.BooksDomainToUiMapper
 import com.example.holybibleapp.domain.ErrorType
 
 class BaseBooksDomainToUiMapper(
-    private val communication: BooksCommunication,
-    private val resourceProvider: ResourceProvider
-) :
-    BooksDomainToUiMapper {
+    private val resourceProvider: ResourceProvider,
+    private val bookMapper: BookDomainToUiMapper
+) : BooksDomainToUiMapper {
 
-    override fun map(books: List<Book>) = BooksUI.Success(communication, books)
+    override fun map(books: List<BookDomain>) = BooksUi.Success(books, bookMapper)
 
-    override fun map(errorType: ErrorType) = BooksUI.Fail(communication, errorType, resourceProvider)
+    override fun map(errorType: ErrorType) = BooksUi.Fail(errorType, resourceProvider)
 }

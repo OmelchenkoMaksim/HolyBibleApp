@@ -1,7 +1,8 @@
 package com.example.holybibleapp.data.net
 
 import com.example.holybibleapp.core.Abstract
-import com.example.holybibleapp.core.Book
+import com.example.holybibleapp.data.BookData
+import com.example.holybibleapp.data.ToBookMapper
 import com.google.gson.annotations.SerializedName
 
 data class BookCloud(
@@ -9,9 +10,7 @@ data class BookCloud(
     private val id: Int,
     @SerializedName("name")
     private val name: String
-) : Abstract.Object<Book, BookCloudMapper>() {
+) : Abstract.Object<BookData, ToBookMapper> {
 
-    override fun map(mapper: BookCloudMapper): Book = mapper.map(id, name)
+    override fun map(mapper: ToBookMapper) = mapper.map(id, name)
 }
-
-// [{"id":1,"name":"Genesis","testament":"OT","genre":{"id":1,"name":"Law"}}

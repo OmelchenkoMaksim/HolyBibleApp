@@ -1,5 +1,6 @@
 package com.example.holybibleapp.data
 
+import android.util.Log
 import com.example.holybibleapp.data.cache.BooksCacheDataSource
 import com.example.holybibleapp.data.cache.BooksCacheMapper
 
@@ -16,6 +17,7 @@ interface BooksRepository {
 
         override suspend fun fetchBooks() = try {
             val booksCacheList = cacheDataSource.fetchBooks()
+
             if (booksCacheList.isEmpty()) {
                 val booksCloudList = cloudDataSource.fetchBooks()
                 val books = booksCloudMapper.map(booksCloudList)
@@ -25,6 +27,7 @@ interface BooksRepository {
                 BooksData.Success(booksCacheMapper.map(booksCacheList))
             }
         } catch (e: Exception) {
+            Log.e("error in ${this.javaClass.simpleName}", e.message.toString())
             BooksData.Fail(e)
         }
     }
