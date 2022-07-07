@@ -10,8 +10,9 @@ interface BooksCacheMapper : Abstract.Mapper {
 
     class Base(private val mapper: ToBookMapper) : BooksCacheMapper {
 
-        override fun map(books: List<Abstract.Object<BookData, ToBookMapper>>) = books.map { bookDb ->
-            bookDb.map(mapper)
-        }
+        override fun map(books: List<Abstract.Object<BookData, ToBookMapper>>) =
+            books.map { bookDb ->
+                bookDb.map(mapper)
+            }
     }
 }

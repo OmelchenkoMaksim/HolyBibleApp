@@ -1,11 +1,7 @@
 package com.example.holybibleapp.core
 
 import android.app.Application
-import com.example.holybibleapp.data.BookDataToDbMapper
-import com.example.holybibleapp.data.BooksCloudDataSource
-import com.example.holybibleapp.data.BooksCloudMapper
-import com.example.holybibleapp.data.BooksRepository
-import com.example.holybibleapp.data.ToBookMapper
+import com.example.holybibleapp.data.*
 import com.example.holybibleapp.data.cache.BooksCacheDataSource
 import com.example.holybibleapp.data.cache.BooksCacheMapper
 import com.example.holybibleapp.data.cache.RealmProvider
@@ -13,11 +9,7 @@ import com.example.holybibleapp.data.net.BooksService
 import com.example.holybibleapp.domain.BaseBookDataToDomainMapper
 import com.example.holybibleapp.domain.BaseBooksDataToDomainMapper
 import com.example.holybibleapp.domain.BooksInteractor
-import com.example.holybibleapp.presentation.BaseBookDomainToUiMapper
-import com.example.holybibleapp.presentation.BaseBooksDomainToUiMapper
-import com.example.holybibleapp.presentation.BooksCommunication
-import com.example.holybibleapp.presentation.MainViewModel
-import com.example.holybibleapp.presentation.ResourceProvider
+import com.example.holybibleapp.presentation.*
 import com.google.gson.Gson
 import io.realm.Realm
 import okhttp3.OkHttpClient
@@ -57,7 +49,8 @@ class BibleApp : Application() {
         val toBookMapper = ToBookMapper.Base()
         val cloudDataSource = BooksCloudDataSource.Base(service, gson)
         val realmProvider = RealmProvider.Base()
-        val cacheDataSource = BooksCacheDataSource.Base(realmProvider = realmProvider, BookDataToDbMapper.Base())
+        val cacheDataSource =
+            BooksCacheDataSource.Base(realmProvider = realmProvider, BookDataToDbMapper.Base())
         val booksCloudMapper = BooksCloudMapper.Base(toBookMapper)
         val booksCacheMapper = BooksCacheMapper.Base(toBookMapper)
         val booksRepository = BooksRepository.Base(
@@ -71,9 +64,13 @@ class BibleApp : Application() {
             mapper = BaseBooksDataToDomainMapper(BaseBookDataToDomainMapper()),
         )
         val communication = BooksCommunication.Base()
+        val resourceProvider = ResourceProvider.Base(this)
         mainViewModel = MainViewModel(
             booksInteractor = booksInteractor,
-            mapper = BaseBooksDomainToUiMapper(ResourceProvider.Base(this), BaseBookDomainToUiMapper()),
+            mapper = BaseBooksDomainToUiMapper(
+                resourceProvider,
+                BaseBookDomainToUiMapper(resourceProvider)
+            ),
             communication = communication
         )
     }

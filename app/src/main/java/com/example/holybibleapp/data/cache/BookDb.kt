@@ -12,5 +12,6 @@ open class BookDb : RealmObject(), Abstract.Object<BookData, ToBookMapper> {
     @PrimaryKey
     var id = -1
     var name = ""
-    override fun map(mapper: ToBookMapper) = BookData(id, name)
+    var testament = ""
+    override fun map(mapper: ToBookMapper) = BookData(id, name, testament)
 }

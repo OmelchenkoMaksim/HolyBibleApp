@@ -12,13 +12,16 @@ sealed class BookUi : Object<Unit, StringMapper> {
     // показываю на старте и при нажатии на попробовать снова
     object Progress : BookUi()
 
-    class Base(
+    abstract class Info(
         private val id: Int,
         private val name: String
     ) : BookUi() {
-
         override fun map(mapper: StringMapper) = mapper.map(name)
     }
+
+    class Base(id: Int, name: String) : Info(id, name)
+
+    class Testament(id: Int, name: String) : Info(id, name)
 
     class Fail(private val message: String) : BookUi() {
 
