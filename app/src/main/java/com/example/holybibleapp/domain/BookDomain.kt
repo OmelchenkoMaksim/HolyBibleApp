@@ -14,14 +14,7 @@ sealed class BookDomain : Object<BookUi, BookDomainToUiMapper> {
         override fun map(mapper: BookDomainToUiMapper) = mapper.map(id, name)
     }
 
-  data  class Testament(private val type: TestamentType) : BookDomain() {
-        override fun map(mapper: BookDomainToUiMapper): BookUi = mapper.map(type.getId(), type.name)
+    data class Testament(private val type: TestamentType) : BookDomain() {
+        override fun map(mapper: BookDomainToUiMapper): BookUi = type.map(mapper)
     }
-}
-
-enum class TestamentType(private val id: Int) {
-    OLD(Int.MIN_VALUE),
-    NEW(Int.MAX_VALUE);
-
-    fun getId() = id
 }

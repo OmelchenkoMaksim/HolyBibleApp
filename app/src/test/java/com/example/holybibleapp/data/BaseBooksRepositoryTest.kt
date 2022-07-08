@@ -1,16 +1,8 @@
-//package com.example.holybibleapp.data
-//
-//import com.example.holybibleapp.data.cache.BookDb
-//
-//abstract class BaseBooksRepositoryTest {
-//
-//    protected inner class TestBookCacheMapper : BookCacheMapper {
-//
-//        override fun map(bookDb: BookDb) = BookData(bookDb.id, bookDb.name)
-//    }
-//
-//    protected class TestBookCloudMapper : ToBookMapper {
-//
-//        override fun map(id: Int, name: String) = BookData(id, name)
-//    }
-//}
+package com.example.holybibleapp.data
+
+abstract class BaseBooksRepositoryTest {
+
+    protected class TestToBookMapper : ToBookMapper {
+        override fun map(id: Int, name: String, testament: String) = BookData(id, name, testament)
+    }
+}

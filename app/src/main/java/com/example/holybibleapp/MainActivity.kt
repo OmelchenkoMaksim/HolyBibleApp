@@ -2,7 +2,7 @@ package com.example.holybibleapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.holybibleapp.core.BibleApp
 import com.example.holybibleapp.presentation.BibleAdapter
@@ -21,10 +21,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         })
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        viewModel.observe(this, Observer {
+        viewModel.observe(this) {
             adapter.update(it)
-        })
+        }
         viewModel.fetchBooks()
     }
 }

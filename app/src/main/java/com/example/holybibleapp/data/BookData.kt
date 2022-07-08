@@ -3,10 +3,10 @@ package com.example.holybibleapp.data
 import com.example.holybibleapp.core.Abstract.Mapper
 import com.example.holybibleapp.core.Abstract.Object
 import com.example.holybibleapp.data.cache.BookDb
+import com.example.holybibleapp.data.cache.DbWrapper
 import com.example.holybibleapp.domain.BookDomain
-import io.realm.Realm
 
-class BookData(
+data class BookData(
     private val id: Int,
     private val name: String,
     private val testament: String,
@@ -14,8 +14,8 @@ class BookData(
     Object<BookDomain, BookDataToDomainMapper> {
 
     override fun map(mapper: BookDataToDomainMapper) = mapper.map(id, name)
-    override fun mapTo(mapper: BookDataToDbMapper, realm: Realm) =
-        mapper.mapToDb(id, name, testament, realm)
+    override fun mapTo(mapper: BookDataToDbMapper, db: DbWrapper) =
+        mapper.mapToDb(id, name, testament, db)
 
     fun compare(temp: TestamentTemp) = temp.matches(testament)
 
@@ -42,5 +42,5 @@ interface TestamentTemp {
 
 interface ToBookDb<T, M : Mapper> {
 
-    fun mapTo(mapper: M, realm: Realm): T
+    fun mapTo(mapper: M, db: DbWrapper): T
 }

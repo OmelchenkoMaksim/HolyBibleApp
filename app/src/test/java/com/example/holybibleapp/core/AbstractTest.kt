@@ -1,7 +1,8 @@
 package com.example.holybibleapp.core
 
 import junit.framework.Assert.assertTrue
-import org.junit.*
+import org.junit.Assert.assertEquals
+import org.junit.Test
 import java.io.IOException
 
 class AbstractTest {
@@ -10,7 +11,8 @@ class AbstractTest {
     fun `test success`() {
         val dataObject = TestDataObject.Success("a", "b")
         val domainObject = dataObject.map(DataMapper.Base())
-        assertTrue(domainObject is DomainObject.Success)
+        val expected = DomainObject.Success("a b")
+        assertEquals(expected, domainObject)
     }
 
     @Test
@@ -44,17 +46,17 @@ class AbstractTest {
 
     private sealed class DomainObject : Abstract.Object<UIObject, DomainToUIMapper> {
 
-        class Success(private val textCombined: String) : DomainObject() {
+        data class Success(private val textCombined: String) : DomainObject() {
 
             override fun map(mapper: DomainToUIMapper): UIObject {
-                TODO("Not yet implemented")
+                throw IllegalStateException("not impl :(")
             }
         }
 
         class Fail : DomainObject() {
 
             override fun map(mapper: DomainToUIMapper): UIObject {
-                TODO("Not yet implemented")
+                throw IllegalStateException("not impl :(")
             }
         }
     }
