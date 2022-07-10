@@ -112,7 +112,7 @@ class BooksRepositoryTest : BaseBooksRepositoryTest() {
     }
 
     private inner class TestBooksCloudDataSource(
-        private val returnSuccess: Boolean
+        private val returnSuccess: Boolean,
     ) : BooksCloudDataSource {
 
         override suspend fun fetchBooks(): List<BookCloud> {
@@ -129,7 +129,7 @@ class BooksRepositoryTest : BaseBooksRepositoryTest() {
     }
 
     private inner class TestBooksCacheDataSource(
-        private val returnSuccess: Boolean
+        private val returnSuccess: Boolean,
     ) : BooksCacheDataSource {
 
         override fun fetchBooks(): List<BookDb> {

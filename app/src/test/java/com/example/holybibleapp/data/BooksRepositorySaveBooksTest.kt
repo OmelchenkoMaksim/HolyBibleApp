@@ -71,7 +71,7 @@ class BooksRepositorySaveBooksTest : BaseBooksRepositoryTest() {
                 list.add(book.mapTo(object : BookDataToDbMapper {
                     override fun mapToDb(
                         id: Int, name: String,
-                        testament: String, db: DbWrapper
+                        testament: String, db: DbWrapper,
                     ) = BookDb().apply {
                         this.id = id
                         this.name = "$name db"

@@ -14,7 +14,7 @@ sealed class BookUi : Object<Unit, StringMapper> {
 
     abstract class Info(
         private val id: Int,
-        private val name: String
+        private val name: String,
     ) : BookUi() {
         override fun map(mapper: StringMapper) = mapper.map(name)
     }
@@ -23,7 +23,7 @@ sealed class BookUi : Object<Unit, StringMapper> {
 
     class Testament(id: Int, name: String) : Info(id, name)
 
-    class Fail(private val message: String) : BookUi() {
+    data class Fail(private val message: String) : BookUi() {
 
         override fun map(mapper: StringMapper) = mapper.map(message)
     }

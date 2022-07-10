@@ -11,7 +11,7 @@ interface BooksCacheDataSource {
 
     class Base(
         private val realmProvider: RealmProvider,
-        private val mapper: BookDataToDbMapper
+        private val mapper: BookDataToDbMapper,
     ) : BooksCacheDataSource {
 
         override fun fetchBooks(): List<BookDb> {

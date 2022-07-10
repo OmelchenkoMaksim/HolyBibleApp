@@ -28,7 +28,7 @@ class AbstractTest {
 
         class Success(
             private val textOne: String,
-            private val textTwo: String
+            private val textTwo: String,
         ) : TestDataObject() {
 
             override fun map(mapper: DataMapper): DomainObject {

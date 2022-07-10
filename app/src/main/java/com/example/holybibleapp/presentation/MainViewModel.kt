@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 class MainViewModel(
     private val communication: BooksCommunication,
     private val booksInteractor: BooksInteractor,
-    private val mapper: BooksDomainToUiMapper
+    private val mapper: BooksDomainToUiMapper,
 ) : ViewModel() {
 
     fun fetchBooks() {
