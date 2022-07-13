@@ -4,19 +4,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.holybibleapp.R
 import com.example.holybibleapp.presentation.BibleAdapter.BibleViewHolder
 
-class BibleAdapter(private val retry: Retry) : RecyclerView.Adapter<BibleViewHolder>() {
+class BibleAdapter(
+    private val retry: Retry,
+    private val collapse: CollapseListener,
+) : RecyclerView.Adapter<BibleViewHolder>() {
 
     private val books = ArrayList<BookUi>()
 
+    // метод который будем дергать из юай нашего для обновления элементов
+    // ДИФУТИЛ ДОБАВЛЯЕТ АНИМАЦИЮ ПЛАВНУЮ !!!
     fun update(new: List<BookUi>) {
+        // создаем дифутил принимает старый список books и новвый new
+        val diffCallback = DiffUtilCallback(books, new)
+        // высчитывание разницы в списках (принимает созданный дифутилКолбэк)
+        val result = DiffUtil.calculateDiff(diffCallback)
         books.clear()
         books.addAll(new)
-        notifyDataSetChanged()
+        // notifyDataSetChanged() не нужен после появления настроенного диффУтила
+        result.dispatchUpdatesTo(this)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -32,7 +44,7 @@ class BibleAdapter(private val retry: Retry) : RecyclerView.Adapter<BibleViewHol
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         0 -> BibleViewHolder.Base(R.layout.book_layout.makeView(parent))
         1 -> BibleViewHolder.Fail(R.layout.fail_fullscreen.makeView(parent), retry = retry)
-        2 -> BibleViewHolder.Base(R.layout.testament.makeView(parent))
+        2 -> BibleViewHolder.Testament(R.layout.testament.makeView(parent), collapse)
         else -> BibleViewHolder.FullscreenProgress(R.layout.progress_fullscreen.makeView(parent))
     }
 
@@ -47,13 +59,38 @@ class BibleAdapter(private val retry: Retry) : RecyclerView.Adapter<BibleViewHol
 
         class FullscreenProgress(view: View) : BibleViewHolder(view)
 
-        class Base(view: View) : BibleViewHolder(view) {
-
+        // Этот класс нужен что бы убрать дублироване и соответствовать DRY
+        // т.к. Base и Testament имеют идентичный код
+        abstract class Info(view: View) : BibleViewHolder(view) {
             private val name = itemView.findViewById<TextView>(R.id.textView)
             override fun bind(book: BookUi) {
                 book.map(object : BookUi.StringMapper {
                     override fun map(text: String) {
                         name.text = text
+                    }
+                })
+            }
+        }
+
+        class Base(view: View) : Info(view)
+
+        class Testament(view: View, private val collapse: CollapseListener) : Info(view) {
+            private val collapseView = itemView.findViewById<ImageView>(R.id.collapseView)
+            override fun bind(book: BookUi) {
+                super.bind(book)
+                itemView.setOnClickListener {
+                    // collapse.collapseOrExpand(collapse) вот так было бы не корректно,
+                    // а правильно вызывать метод элемента
+                    book.collapseOrExpand(collapse)
+                }
+                book.showCollapsed(object : BookUi.CollapseMapper {
+                    override fun show(collapse: Boolean) {
+                        val iconId = if (collapse) {
+                            R.drawable.expand_more
+                        } else {
+                            R.drawable.expand_less
+                        }
+                        collapseView.setImageResource(iconId)
                     }
                 })
             }
@@ -75,8 +112,13 @@ class BibleAdapter(private val retry: Retry) : RecyclerView.Adapter<BibleViewHol
     }
 
     interface Retry {
-
         fun tryAgain()
+    }
+
+    // Interface Segregation о том что мы не добавляем метод в Retry,
+    // а пишем новый интерфейс для метода
+    interface CollapseListener {
+        fun collapseOrExpand(id: Int)
     }
 }
 

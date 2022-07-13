@@ -71,7 +71,8 @@ class BibleApp : Application() {
                 resourceProvider,
                 BaseBookDomainToUiMapper(resourceProvider)
             ),
-            communication = communication
+            communication = communication,
+            uiDataCache = UiDataCache.Base(IdCache.Base(this))
         )
     }
 
